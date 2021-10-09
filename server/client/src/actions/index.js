@@ -1,4 +1,5 @@
 const COLS_ADDED = "COLS_ADDED";
+const COLS_ADJUSTED = "COLS_ADJUSTED";
 
 export const addColumns = (colsState) => {
   return {
@@ -6,3 +7,10 @@ export const addColumns = (colsState) => {
     payload: colsState,
   };
 };
+
+export const adjustColumns = (scriptInfoObj) => {
+  return {
+    type: COLS_ADJUSTED,
+    payload: scriptInfoObj,
+  }
+}

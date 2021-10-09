@@ -8,12 +8,12 @@ const DEFAULT_STATE = {
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
     // make the things
-    case 'COLS-ADDED': {
+    case 'COLS_ADDED': {
       return {
         ...state,
-        InputCols: action.payload.newInputCols,
-        OutputCols: action.payload.data.newOutputcols,
-        tableName: action.payload.data.tableName,
+        inputCols: action.payload.inputState.newInputCols,
+        outputCols: action.payload.inputState.newOutputCols,
+        tableName: action.payload.inputState.tableName,
       }
     }
     default:

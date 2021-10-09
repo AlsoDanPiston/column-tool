@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import ParsePastedInputs from '../helpers/ParsePastedInputs';
 import { addColumns } from '../actions';
+import { useHistory } from 'react-router-dom';
 
 export default function HomeScreen() {
 
@@ -10,6 +11,7 @@ export default function HomeScreen() {
   const [tableName, setTableName] = useState("");
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const submitLists = (e) => {
     e.preventDefault();
@@ -39,6 +41,7 @@ export default function HomeScreen() {
     setTableName('');
 
     // set it to go to Match screen here too
+    history.push('/match')
   };
 
   return (
