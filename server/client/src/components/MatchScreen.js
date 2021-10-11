@@ -1,10 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import {  useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+
 
 export default function MatchScreen() {
   const inputList = useSelector((state => state.columns.inputCols))
-  const outputList = useSelector((state => state.columns.inputCols))
+  const outputList = useSelector((state => state.columns.outputCols))
 
   // set up object to hold original column name, new position, new column name as 3 separate arrays
   // new column name will be 'drop' if not included, will rely on array index to keep track of order of 
@@ -18,28 +21,31 @@ export default function MatchScreen() {
   // create a set of <li>'s tagged by number from inputList and one for outputList also tagged by number
   // put a box around them in style here
   function RenderLeftSideList() {
-    let i = 0;
+    // want to be able to show all of input list and save the name of clicked item
+
+    // if another left item is clicked before right item, discard what was clicked
 
     if (inputList.length > 0) {
-      return inputList.map((colName) => (
+      return (
         <div className="col-sm-3 p-2 m-4">
-          <li id={i}>{colName}</li>
+          <button type="button" className="btn btn-primary" onClick={submitMatching}>Col1</button>
         </div>
-      ));
+      );
     }
   }
 
+  const history = useHistory();
 
   // refactor to make one function that reads in whichever list
   function RenderRightSideList() {
-    let i = 0;
+    // want to be able to show all of output list and get the position of list of clicked item
 
     if (outputList.length > 0) {
-      return outputList.map((colName) => (
+      return (
         <div className="col-sm-3 p-2 m-4">
-          <li id={i}>{colName}</li>
+         right side!
         </div>
-      ));
+      );
     }
   }
 
@@ -52,6 +58,27 @@ export default function MatchScreen() {
   }
 
   // set scriptInfoObject to state using dispatcing action to COLS_ADJUSTED to the reducer-script-info.js
+  const submitMatching = (e) => {
+    e.preventDefault();
+
+    // // These functions will return a list as long as the input was tab or space delimited in the text box
+    // const matchState = {
+    //   origColNameList: ['firstName', 'lastName', 'accountNumber', 'DOB', 'SSN'],
+    //   newPositionList: [2, 1, 0, 'drop', 'drop'],
+    //   newColNameList: ['Account_Number', 'Last_Name', 'First_Name'],
+    //   tableName: 'AcctNumCrosswalk',
+    // }
+
+    // // dispatch action 
+    // dispatch(
+    //   adjustColumns({
+    //     matchState,
+    //   })
+    // );  
+
+    // set it to go to Match screen here too
+    history.push('/script')
+  };
 
   return (
     <div>
@@ -72,6 +99,14 @@ export default function MatchScreen() {
               < RenderRightSideList />
             </ul>
             <hr/>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="row justify-content-md-center">
+          <div className="col-sm">
+            <button type="button" className="btn btn-primary" onClick={submitMatching}>Next Step</button>
           </div>
         </div>
       </div>

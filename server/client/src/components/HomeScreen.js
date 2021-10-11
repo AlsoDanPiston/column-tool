@@ -53,7 +53,7 @@ export default function HomeScreen() {
         <br/>
         <br/>
         <div className="row">
-          <h5>Paste in Columns you wish you had (either seperated by comma or pasted top row of Excel sheet):</h5>
+          <h5>Paste in Schema Columns you wish you had (either seperated by comma or pasted top row of Excel sheet):</h5>
           <input 
             className="form-control" 
             type="text" 
@@ -65,7 +65,7 @@ export default function HomeScreen() {
         <br/>
     
         <div className="row">
-          <h5>Paste in Input Columns (either seperated by comma or pasted top row of Excel sheet):</h5>
+          <h5>Paste in Input Columns you currently have (either seperated by comma or pasted top row of Excel sheet):</h5>
           <input 
             className="form-control" 
             type="text" 

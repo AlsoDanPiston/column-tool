@@ -1,4 +1,4 @@
-import { ScrollSpy } from "bootstrap";
+import React from 'react';
 
 
 export default function ScriptScreen() {
@@ -8,87 +8,97 @@ export default function ScriptScreen() {
     origColNameList: ['firstName', 'lastName', 'accountNumber', 'DOB', 'SSN'],
     newPositionList: [2, 1, 0, 'drop', 'drop'],
     newColNameList: ['Account_Number', 'Last_Name', 'First_Name'],
+    tableName: 'AcctNumCrosswalk',
   }
 
   // initialize arrays to build script with
   let dropList = []; 
-  let origNamesInNewOrder= new Array(scriptInfoObject.newColNameList.length).fill('a');
+  let origNamesInNewOrder = new Array(scriptInfoObject.newColNameList.length).fill('a');
 
-  for (let i = 0; i < scriptInfoObject.origColNameList; i++) {
-    if (scriptInfoObject.newPositionList[i] == 'drop') {
+  for (let i = 0; i < scriptInfoObject.origColNameList.length; i++) {
+
+    if (scriptInfoObject.newPositionList[i] === 'drop') {
       dropList.push(scriptInfoObject.origColNameList[i]);
     } else {
-      let indexNumber = newPositionList[i];
+      let indexNumber = scriptInfoObject.newPositionList[i];
       origNamesInNewOrder[indexNumber] = scriptInfoObject.origColNameList[i];
     }
   };
+  
+  // build SQL query
+  let sqlSelectStr = '';
 
+  for (let i = 0; i < scriptInfoObject.newColNameList.length; i++) {
+    if (i < scriptInfoObject.newColNameList.length - 1) {
+      sqlSelectStr += '  ' + origNamesInNewOrder[i] + ' AS ' + scriptInfoObject.newColNameList[i] + ',\n';
+    } else {
+      sqlSelectStr += '  ' + origNamesInNewOrder[i] + ' AS ' + scriptInfoObject.newColNameList[i];
+    }
+  };
 
-  // // if no newName, skip it
-  // // make sure no comma on last one
-  // const scriptSQL = 
-  // ` SELECT 
-  //     {origColNameList[0]} AS {newName[0]},
-  //     {origName[1]} AS {newName[1]}
-  //   INTO
-  //     tblNew{tableName}
-  //   FROM
-  //     {tableName}`;
+  const scriptSQL = 
+   `SELECT 
+${sqlSelectStr}
+INTO
+  tblNew${scriptInfoObject.tableName}
+FROM
+  ${scriptInfoObject.tableName}`;
 
-  // // if no newName: add ' to the list elements, make a list dropColList
-  // const scriptDropPythonPandas = 
-  // ` {tableName}New = {tableName}.drop([{dropColList}], axis=1)`;
+  // Create python script with dropList and origNamesInNewOrder
+  // drop columns if there are any to drop
 
-  // // rename what is left, make a list newColList using the newnames
-  // const scriptRenamePythonPandas = 
-  // ` {tableName}New.columns = [{newColList}]`
+  let scriptDropPythonPandas = '';
 
-  // // reorder what is left, make a list newColOrderList using the new index
-  // const scriptReorderPythonPandas = 
-  // ` {tableName}New = {tableName}New[[{newColOrderList}]]`
+  if (dropList.length > 0) {
+   scriptDropPythonPandas += 
+  `${scriptInfoObject.tableName}New = ${scriptInfoObject.tableName}.drop([${dropList}], axis=1)\n`;
+  } 
 
-  // // combine the python results
-  // const scriptPython = scriptDropPythonPandas + '\n' + scriptRenamePythonPandas + '\n' + scriptReorderPythonPandas
+  // rename what is left, make a list newColList using the newnames
+  const scriptRenamePythonPandas = 
+  `${scriptInfoObject.tableName}New.columns = [${origNamesInNewOrder}]`;
 
-  // decide which to display by which button was clicked
+  // reorder what is left, make a list newColOrderList using the new index
+  const scriptReorderPythonPandas = 
+  `${scriptInfoObject.tableName}New = ${scriptInfoObject.tableName}New[[${scriptInfoObject.newColNameList}]]`;
+
+  // combine the python results
+  const scriptPython = scriptDropPythonPandas + scriptRenamePythonPandas + '\n' + scriptReorderPythonPandas;
+
+  // decide which to display by which button was clicked - default to sql
   let scriptToDisplay = 'sql';
 
-  // const chooseSQL = (e) => {
-  //   e.preventDefault();
-  //   scriptToDisplay = 'sql'
-  // };
+  const chooseSQL = (e) => {
+    e.preventDefault();
+    scriptToDisplay = 'sql';
+  };
 
-  // const choosePython = (e) => {
-  //   e.preventDefault();
-  //   scriptToDisplay = 'python'
-  // }
+  const choosePython = (e) => {
+    e.preventDefault();
+    scriptToDisplay = 'python';
+  }
 
   // if scriptToDisplay = python, return scriptPython.  if = sql, return scriptSQL
-  const scriptChosen = () => (scriptToDisplay = 'sql' ) ? scriptSQL : scriptPython;
+  const scriptChosen = (scriptToDisplay === 'sql') ? scriptSQL : scriptPython;
+
+  console.log(scriptToDisplay);
 
   return (
     <div>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-4 text-center">
             <button type="button" className="btn btn-primary" onClick={chooseSQL}>SQL</button>
             <br />
-            <button type="button" className="btn btn-primary" onclick={choosePython}>SQL</button>
+            <button type="button" className="btn btn-primary" onClick={choosePython}>Python (pandas)</button>
           </div>
-        </div>
-      </div>
 
-      <div className="container text-center">
-        <div className="row">
           <div className="col-md-8">
-          display the script here and make it look like a pretty textbox of code
-          do a ternary here to decide which one to display
-          {scriptChosen}
+            {scriptChosen}
           </div>
         </div>
       </div>
       
     </div>
   )
-
 }
