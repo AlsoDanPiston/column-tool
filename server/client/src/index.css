@@ -1,13 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Inter", sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.button-size {
+  width: 200px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.button-size-match {
+  width: 360px;
+  padding: 5px;
+  margin: 5px;
 }

@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
+import BuildPythonScript from '../helpers/BuildPythonScript';
+import BuildSqlScript from '../helpers/BuildSqlScript';
 
 
 export default function ScriptScreen() {
+
+  const [script, setScript] = useState("");
+
   // read in ScriptInfoObject from state
   // for now use a fake one
   const scriptInfoObject = {
-    origColNameList: ['firstName', 'lastName', 'accountNumber', 'DOB', 'SSN'],
+    inputCols: ['firstName', 'lastName', 'accountNumber', 'DOB', 'SSN'],
     newPositionList: [2, 1, 0, 'drop', 'drop'],
     newColNameList: ['Account_Number', 'Last_Name', 'First_Name'],
     tableName: 'AcctNumCrosswalk',
@@ -15,90 +22,80 @@ export default function ScriptScreen() {
   let dropList = []; 
   let origNamesInNewOrder = new Array(scriptInfoObject.newColNameList.length).fill('a');
 
-  for (let i = 0; i < scriptInfoObject.origColNameList.length; i++) {
-
-    if (scriptInfoObject.newPositionList[i] === 'drop') {
-      dropList.push(scriptInfoObject.origColNameList[i]);
+  for (let i = 0; i < scriptInfoObject.inputCols.length; i++) {
+    if (scriptInfoObject.newPositionList[i] == 'drop') {
+      dropList.push(scriptInfoObject.inputCols[i]);
     } else {
       let indexNumber = scriptInfoObject.newPositionList[i];
-      origNamesInNewOrder[indexNumber] = scriptInfoObject.origColNameList[i];
+      origNamesInNewOrder[indexNumber] = scriptInfoObject.inputCols[i];
     }
   };
-  
-  // build SQL query
-  let sqlSelectStr = '';
 
-  for (let i = 0; i < scriptInfoObject.newColNameList.length; i++) {
-    if (i < scriptInfoObject.newColNameList.length - 1) {
-      sqlSelectStr += '  ' + origNamesInNewOrder[i] + ' AS ' + scriptInfoObject.newColNameList[i] + ',\n';
+  const sqlScript = BuildSqlScript(scriptInfoObject, origNamesInNewOrder);
+  const pyScript = BuildPythonScript(scriptInfoObject, origNamesInNewOrder, dropList);
+
+  // **** THESE CONSOLE LOG NICELY BUT DISPLAY IN JSX WONKY, PYTHON HAS EXTRA LINE, SQL HAS NO LINE BREAKS *****
+  //********************************* */
+  console.log(sqlScript);
+  console.log(pyScript);
+
+  const handleScriptSelect = (e) => {
+    console.log(e.target.value);
+
+    let outputScript = '';
+
+    if (e.target.value == 'SQL') {
+      outputScript = sqlScript;
+    } else if (e.target.value == 'Python') {
+      outputScript = pyScript;
     } else {
-      sqlSelectStr += '  ' + origNamesInNewOrder[i] + ' AS ' + scriptInfoObject.newColNameList[i];
+      console.log('error, somehow a language that was not planned for was selected');
     }
-  };
 
-  const scriptSQL = 
-   `SELECT 
-${sqlSelectStr}
-INTO
-  tblNew${scriptInfoObject.tableName}
-FROM
-  ${scriptInfoObject.tableName}`;
-
-  // Create python script with dropList and origNamesInNewOrder
-  // drop columns if there are any to drop
-
-  let scriptDropPythonPandas = '';
-
-  if (dropList.length > 0) {
-   scriptDropPythonPandas += 
-  `${scriptInfoObject.tableName}New = ${scriptInfoObject.tableName}.drop([${dropList}], axis=1)\n`;
-  } 
-
-  // rename what is left, make a list newColList using the newnames
-  const scriptRenamePythonPandas = 
-  `${scriptInfoObject.tableName}New.columns = [${origNamesInNewOrder}]`;
-
-  // reorder what is left, make a list newColOrderList using the new index
-  const scriptReorderPythonPandas = 
-  `${scriptInfoObject.tableName}New = ${scriptInfoObject.tableName}New[[${scriptInfoObject.newColNameList}]]`;
-
-  // combine the python results
-  const scriptPython = scriptDropPythonPandas + scriptRenamePythonPandas + '\n' + scriptReorderPythonPandas;
-
-  // decide which to display by which button was clicked - default to sql
-  let scriptToDisplay = 'sql';
-
-  const chooseSQL = (e) => {
-    e.preventDefault();
-    scriptToDisplay = 'sql';
-  };
-
-  const choosePython = (e) => {
-    e.preventDefault();
-    scriptToDisplay = 'python';
+    setScript(outputScript);
   }
-
-  // if scriptToDisplay = python, return scriptPython.  if = sql, return scriptSQL
-  const scriptChosen = (scriptToDisplay === 'sql') ? scriptSQL : scriptPython;
-
-  console.log(scriptToDisplay);
 
   return (
     <div>
-      <div className="container">
+      <ScriptScreenStyle>
+        <div className="container project-format">
         <div className="row">
-          <div className="col-md-4 text-center">
-            <button type="button" className="btn btn-primary" onClick={chooseSQL}>SQL</button>
-            <br />
-            <button type="button" className="btn btn-primary" onClick={choosePython}>Python (pandas)</button>
+            <br/>
+            <h4 className="text-center" style={{color: "#591C0B"}}><strong>Select the language and copy the script to paste in your analysis script</strong></h4>
           </div>
+          <br/>
+          <br/>
+          <div className="row">
+            <div className="col-md-4 text-center">
+              <button type="button" className="btn btn-primary button-size" value='SQL' onClick={handleScriptSelect}>SQL</button>
+              <br />
+              <button type="button" className="btn btn-primary button-size" value='Python' onClick={handleScriptSelect}>Python (pandas)</button>
+            </div>
 
-          <div className="col-md-8">
-            {scriptChosen}
+            <div className="col-md-8">
+              <ScriptTextBoxStyle>
+                <div>
+                  {script}
+                </div>
+              </ScriptTextBoxStyle>
+            </div>
           </div>
         </div>
-      </div>
-      
+      </ScriptScreenStyle>
     </div>
   )
 }
+
+const ScriptScreenStyle = styled.div`
+  background: #EEEEEE;
+  margin: 2em;
+  padding-top: 25px;
+  padding-bottom: 125px;
+`;
+
+const ScriptTextBoxStyle = styled.div`
+  background: white;
+  border-style: inset;
+  padding: 12px;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+`;

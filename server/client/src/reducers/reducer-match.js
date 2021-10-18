@@ -1,4 +1,3 @@
-
 const DEFAULT_STATE = {
   inputCols : [],
   newPositionList: [],
@@ -10,12 +9,11 @@ const DEFAULT_STATE = {
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
     // make the things
-    case 'COLS_ADDED': {
+    case 'COLS_MATCHED': {
       return {
         ...state,
-        inputCols: action.payload.inputState.newInputCols,
-        outputCols: action.payload.inputState.newOutputCols,
-        tableName: action.payload.inputState.tableName,
+        newPositionList: action.payload.inputState.newPositionList,
+        newColNameList: action.payload.inputState.newColNameList,
       }
     }
     default:

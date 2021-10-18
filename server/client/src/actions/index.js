@@ -1,5 +1,5 @@
 const COLS_ADDED = "COLS_ADDED";
-const COLS_ADJUSTED = "COLS_ADJUSTED";
+const COLS_MATCHED = "COLS_MATCHED";
 
 export const addColumns = (colsState) => {
   return {
@@ -8,9 +8,9 @@ export const addColumns = (colsState) => {
   };
 };
 
-export const adjustColumns = (scriptInfoObj) => {
+export const matchColumns = (colsState) => {
   return {
-    type: COLS_ADJUSTED,
-    payload: scriptInfoObj,
+    type: COLS_MATCHED,
+    payload: colsState,
   }
 }
