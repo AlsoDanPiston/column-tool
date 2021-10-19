@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from "react-redux";
 import styled from 'styled-components';
 
 import BuildPythonScript from '../helpers/BuildPythonScript';
@@ -6,16 +7,20 @@ import BuildSqlScript from '../helpers/BuildSqlScript';
 
 
 export default function ScriptScreen() {
+  const inputList = useSelector((state => state.columns.inputCols))
+  const positionList = useSelector((state => state.matches.newPositionList))
+  const outputList = useSelector((state => state.matches.newColNameList))
+  const tbl = useSelector((state => state.columns.tableName))
 
   const [script, setScript] = useState("");
 
   // read in ScriptInfoObject from state
   // for now use a fake one
   const scriptInfoObject = {
-    inputCols: ['firstName', 'lastName', 'accountNumber', 'DOB', 'SSN'],
-    newPositionList: [2, 1, 0, 'drop', 'drop'],
-    newColNameList: ['Account_Number', 'Last_Name', 'First_Name'],
-    tableName: 'AcctNumCrosswalk',
+    inputCols: inputList,
+    newPositionList: positionList,
+    newColNameList: outputList,
+    tableName: tbl,
   }
 
   // initialize arrays to build script with
@@ -23,7 +28,7 @@ export default function ScriptScreen() {
   let origNamesInNewOrder = new Array(scriptInfoObject.newColNameList.length).fill('a');
 
   for (let i = 0; i < scriptInfoObject.inputCols.length; i++) {
-    if (scriptInfoObject.newPositionList[i] == 'drop') {
+    if (scriptInfoObject.newPositionList[i] === 'drop') {
       dropList.push(scriptInfoObject.inputCols[i]);
     } else {
       let indexNumber = scriptInfoObject.newPositionList[i];
@@ -34,6 +39,7 @@ export default function ScriptScreen() {
   const sqlScript = BuildSqlScript(scriptInfoObject, origNamesInNewOrder);
   const pyScript = BuildPythonScript(scriptInfoObject, origNamesInNewOrder, dropList);
 
+  // ******************************** */
   // **** THESE CONSOLE LOG NICELY BUT DISPLAY IN JSX WONKY, PYTHON HAS EXTRA LINE, SQL HAS NO LINE BREAKS *****
   //********************************* */
   console.log(sqlScript);
@@ -44,9 +50,9 @@ export default function ScriptScreen() {
 
     let outputScript = '';
 
-    if (e.target.value == 'SQL') {
+    if (e.target.value === 'SQL') {
       outputScript = sqlScript;
-    } else if (e.target.value == 'Python') {
+    } else if (e.target.value === 'Python') {
       outputScript = pyScript;
     } else {
       console.log('error, somehow a language that was not planned for was selected');

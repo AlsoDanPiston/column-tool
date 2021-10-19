@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
-import {  useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import styled from "styled-components";
+
+import { matchColumns } from '../actions';
 
 //newPositionList: action.payload.inputState.newPositionList,
 //newColNameList: action.payload.inputState.newColNameList,
@@ -11,75 +12,80 @@ export default function MatchScreen() {
   const inputList = useSelector((state => state.columns.inputCols))
   const outputList = useSelector((state => state.columns.outputCols))
 
-  const [newPositionList, setNewPositionList] = useState("");
-  const [newColNameList, setNewColNameList] = useState("");
-
   const dispatch = useDispatch();
   const history = useHistory();
+
+  // initialize array of zeroes to update as buttons get clicked
+  // make them all start as 'drop'
+  let tempArrayBuilder = new Array(outputList.length).fill('drop');
+  let tempLeftIndex = -1;
 
   // ********* ************    If (!data) return <Redirect to=“/“ />
 
 
 
-
-  // create a set of <li>'s tagged by number from inputList and one for outputList also tagged by number
-  // put a box around them in style here
   function RenderLeftSideList() {
-    // if another left item is clicked before right item, discard what was clicked
-
-    if (inputList.length > 0) {
+     if (inputList.length > 0) {
       return (
         inputList.map((col, i) => {
-          return <div><button class="button-size-match" index={i} value={col} side='Left' onClick={leftButtonClickHandler}>{col}</button><div/></div>
+          return <div><button className="button-match" key={i} index={i} value='left' onClick={buttonClickHandler}>{col}</button><div/></div>
         })
       );
     }
   }
 
   const buttonClickHandler = (e) => {
-    e.preventDefault;
-    // newPositionList[leftButtonOutput] = rightButtonOutput
     const index = e.target.getAttribute("index");
-    const side = e.target.getAttribute("side");
+    const side = e.target.value;
 
-    return [side, index];
+    // newPositionList[leftButtonOutputIndex] = rightButtonOutputIndex
+    if (side === 'left') {
+      tempLeftIndex = index;
+    } else if (side === 'right' & tempLeftIndex >= 0 & !tempArrayBuilder.includes(index)) {
+      // won't set until right button clicked, also won't set until left button clicked first
+      tempArrayBuilder[tempLeftIndex] = index;
+      tempLeftIndex = -1;
+    } else {
+      console.log('that column is already accounted for');
+    }
   }
 
   function RenderRightSideList() {
-    // if another left item is clicked before right item, discard what was clicked
-
     if (outputList.length > 0) {
       return (
         outputList.map((col, i) => {
-          return <div><button class="button-size-match" index={i} side=" right" value={col} onClick={buttonClickHandler}>{col}</button><div/></div>
+          return <div><button className="button-match" key={i} index={i} value="right" onClick={buttonClickHandler}>{col}</button><div/></div>
         })
       );
     }
   }
 
-  // newPositionList[leftButtonOutputIndex] = rightButtonOutputIndex
-
-
-  // set up object to tell if an output fields is taken (1) or left empty (0)
-  const usedList = outputList ? new Array(outputList.length).fill(0) : []
-
-  const outputColTrackerObject = {
-    outputCols: outputList,
-    used: usedList,
-  }
-
-  // set scriptInfoObject to state using dispatcing action to COLS_ADJUSTED to the reducer-script-info.js
+  // set scriptInfoObject to state using dispatcing action to COLS_MATCHED to the reducer-match.js
   const submitMatching = (e) => {
     e.preventDefault();
 
-    // // These functions will return a list as long as the input was tab or space delimited in the text box
-    // const DEFAULT_STATE = {
-    //   inputCols : [],
-    //   newPositionList: [],
-    //   outputCols : [],
-    //   newColNameList: [],
-    //   tableName: '',
-    // }
+    // set index to drop if 0, convert new indexes to ints, and drop from outputList before setting state
+    let newOutList = [];
+    let temp = [];
+
+    temp = tempArrayBuilder.map((colIndex) => {
+      if (colIndex !== 'drop') {
+        newOutList.push(outputList[colIndex]);
+        return colIndex;
+      }
+      else {
+        return 'drop';
+      }
+    })
+
+    const matchState = {
+      newPositionList: temp,
+      newColNameList: newOutList
+    }
+
+    // set it to error if not all of outputList is selected but give option to continue
+
+
 
     // dispatch action 
     dispatch(

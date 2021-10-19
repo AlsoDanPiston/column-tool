@@ -1,9 +1,7 @@
 
 const DEFAULT_STATE = {
   inputCols : [],
-  newPositionList: [],
   outputCols : [],
-  newColNameList: [],
   tableName: '',
 }
 

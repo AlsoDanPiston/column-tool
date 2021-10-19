@@ -11,8 +11,10 @@ body {
   margin: 5px;
 }
 
-.button-size-match {
+.button-match {
   width: 360px;
   padding: 5px;
   margin: 5px;
+  background-color: #b73225;
+  color: white;
 }
