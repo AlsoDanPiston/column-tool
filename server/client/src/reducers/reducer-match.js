@@ -4,10 +4,7 @@ const DEFAULT_STATE = {
 }
 
 export default function(state = DEFAULT_STATE, action) {
-  console.log(action.payload);
-
   switch (action.type) {
-    // make the things
     case 'COLS_MATCHED': {
       return {
         ...state,

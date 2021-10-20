@@ -7,7 +7,6 @@ const DEFAULT_STATE = {
 
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
-    // make the things
     case 'COLS_ADDED': {
       return {
         ...state,

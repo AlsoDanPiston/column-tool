@@ -46,8 +46,6 @@ export default function ScriptScreen() {
   console.log(pyScript);
 
   const handleScriptSelect = (e) => {
-    console.log(e.target.value);
-
     let outputScript = '';
 
     if (e.target.value === 'SQL') {

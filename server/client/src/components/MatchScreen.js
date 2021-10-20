@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
+import { SVG } from '@svgdotjs/svg.js'
 import styled from "styled-components";
 
 import { matchColumns } from '../actions';
@@ -19,6 +20,7 @@ export default function MatchScreen() {
   // make them all start as 'drop'
   let tempArrayBuilder = new Array(outputList.length).fill('drop');
   let tempLeftIndex = -1;
+  let coordArr = [];
 
   // ********* ************    If (!data) return <Redirect to=“/“ />
 
@@ -28,7 +30,7 @@ export default function MatchScreen() {
      if (inputList.length > 0) {
       return (
         inputList.map((col, i) => {
-          return <div><button className="button-match" key={i} index={i} value='left' onClick={buttonClickHandler}>{col}</button><div/></div>
+          return <div><button className="button-match" id={i} index={i} value='left' onClick={buttonClickHandler}>{col}</button><div/></div>
         })
       );
     }
@@ -37,24 +39,38 @@ export default function MatchScreen() {
   const buttonClickHandler = (e) => {
     const index = e.target.getAttribute("index");
     const side = e.target.value;
+    const selectedButtonX = document.getElementById(index).offsetLeft + 360;
+    // default height of button is 30 px
+    const selectedButtonY = document.getElementById(index).offsetTop - 15;
 
     // newPositionList[leftButtonOutputIndex] = rightButtonOutputIndex
     if (side === 'left') {
       tempLeftIndex = index;
+      coordArr.push([selectedButtonX, selectedButtonY]);
+
     } else if (side === 'right' & tempLeftIndex >= 0 & !tempArrayBuilder.includes(index)) {
       // won't set until right button clicked, also won't set until left button clicked first
       tempArrayBuilder[tempLeftIndex] = index;
       tempLeftIndex = -1;
+
+      if (coordArr.length > 0) {
+        coordArr.push([selectedButtonX, selectedButtonY]);
+      }
     } else {
       console.log('that column is already accounted for');
     }
+
+    var draw = SVG().size(300, 300);
+    var rect = draw.rect(100, 100).attr({ fill: '#f06' });
+
+    console.log(coordArr);
   }
 
   function RenderRightSideList() {
     if (outputList.length > 0) {
       return (
         outputList.map((col, i) => {
-          return <div><button className="button-match" key={i} index={i} value="right" onClick={buttonClickHandler}>{col}</button><div/></div>
+          return <div><button className="button-match" id={i} index={i} value="right" onClick={buttonClickHandler}>{col}</button><div/></div>
         })
       );
     }
@@ -99,7 +115,7 @@ export default function MatchScreen() {
   };
 
   return (
-    <div>
+    <div id="match-screen">
       <MatchScreenStyle>
         <div className="container text-center">
         <div className="row">
