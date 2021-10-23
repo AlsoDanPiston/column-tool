@@ -39,12 +39,6 @@ export default function ScriptScreen() {
   const sqlScript = BuildSqlScript(scriptInfoObject, origNamesInNewOrder);
   const pyScript = BuildPythonScript(scriptInfoObject, origNamesInNewOrder, dropList);
 
-  // ******************************** */
-  // **** THESE CONSOLE LOG NICELY BUT DISPLAY IN JSX WONKY, PYTHON HAS EXTRA LINE, SQL HAS NO LINE BREAKS *****
-  //********************************* */
-  console.log(sqlScript);
-  console.log(pyScript);
-
   const handleScriptSelect = (e) => {
     let outputScript = '';
 
@@ -65,7 +59,7 @@ export default function ScriptScreen() {
         <div className="container project-format">
         <div className="row">
             <br/>
-            <h4 className="text-center" style={{color: "#591C0B"}}><strong>Select the language and copy the script to paste in your analysis script</strong></h4>
+            <h4 className="text-center"><strong>Select the language and copy the script to paste in your analysis script</strong></h4>
           </div>
           <br/>
           <br/>

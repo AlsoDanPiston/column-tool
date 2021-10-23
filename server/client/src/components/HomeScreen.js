@@ -51,7 +51,7 @@ export default function HomeScreen() {
         <div className="container font-link project-format">
           <div className="row">
             <br/>
-            <h1 className="text-center" style={{color: "#591C0B"}}><strong>Column Fixer</strong></h1>
+            <h1 className="text-center"><strong>Column Fixer</strong></h1>
           </div>
           <br/>
           <br/>

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function BuildSqlScript(obj, names) {
   let sqlSelectStr = '';
 
@@ -10,10 +12,13 @@ export default function BuildSqlScript(obj, names) {
 };
 
 // make this a list with <br>'s?
-  return `SELECT
-${sqlSelectStr}
-INTO
-tblNew${obj.tableName}
-FROM
-${obj.tableName}`;
-}
+  return (
+    <div>
+      <div>SELECT</div>
+      <div className="pad-left-script">{sqlSelectStr}</div>
+      <div>INTO</div>
+      <div className="pad-left-script">tblNew{obj.tableName}</div>
+      <div>FROM</div>
+      <div className="pad-left-script">{obj.tableName}</div>
+    </div>);
+};

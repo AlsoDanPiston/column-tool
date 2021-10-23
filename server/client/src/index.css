@@ -12,9 +12,12 @@ body {
 }
 
 .button-match {
-  width: 360px;
-  padding: 5px;
+  width: 100%;
   margin: 5px;
   background-color: #b73225;
   color: white;
+}
+
+.pad-left-script {
+  padding: 1em;
 }
