@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import ParsePastedInputs from '../helpers/ParsePastedInputs';
 import { addColumns } from '../actions';
 import { useHistory } from 'react-router-dom';
-import styled from "styled-components";
 
 export default function HomeScreen() {
 
@@ -46,73 +45,65 @@ export default function HomeScreen() {
   };
 
   return (
-    <div>
-      <HomeScreenStyle>
-        <div className="container font-link project-format">
-          <div className="row">
-            <br/>
-            <h1 className="text-center"><strong>Column Fixer</strong></h1>
-          </div>
+    <div className="screen-div">
+      <div className="container font-link project-format">
+        <div className="row">
           <br/>
-          <br/>
-          <div className="row">
-            <h5>Paste in Schema Columns you wish you had (either seperated by comma or pasted top row of Excel sheet):</h5>
-            <input 
-              className="form-control" 
-              type="text" 
-              value={outputCols}
-              onChange={(e) => setOutputCols(e.target.value)}>
-            </input>
-          </div>
-          <br/>
+          <h1 className="text-center"><strong>Column Fixer</strong></h1>
+        </div>
+        <br/>
+        <br/>
+        <div className="row">
+          <h5>Paste in Schema Columns you wish you had (either seperated by comma or pasted top row of Excel sheet):</h5>
+          <input 
+            className="form-control" 
+            type="text" 
+            value={outputCols}
+            onChange={(e) => setOutputCols(e.target.value)}>
+          </input>
+        </div>
+        <br/>
+    
+        <div className="row">
+          <h5>Paste in Input Columns you currently have (either seperated by comma or pasted top row of Excel sheet):</h5>
+          <input 
+            className="form-control" 
+            type="text" 
+            value={inputCols}
+            onChange={(e) => setInputCols(e.target.value)}>
+          </input>
+        </div>
+        <br/>
       
-          <div className="row">
-            <h5>Paste in Input Columns you currently have (either seperated by comma or pasted top row of Excel sheet):</h5>
-            <input 
-              className="form-control" 
-              type="text" 
-              value={inputCols}
-              onChange={(e) => setInputCols(e.target.value)}>
-            </input>
-          </div>
-          <br/>
-        
-          <div className="row">
-            <h5>Input table/dataframe name:</h5>
-            <input 
-              className="form-control" 
-              type="text" 
-              value={tableName}
-              onChange={(e) => setTableName(e.target.value)}>
-            </input>
-          </div>
-          <br/>
-          <br/>
+        <div className="row">
+          <h5>Input table/dataframe name:</h5>
+          <input 
+            className="form-control" 
+            type="text" 
+            value={tableName}
+            onChange={(e) => setTableName(e.target.value)}>
+          </input>
         </div>
+        <br/>
+        <br/>
+      </div>
 
-        <div className="container">
-          <div className="row justify-content-md-center">
-            <div className="col-md-3">
-              <button type="button" className="btn btn-primary button-size" onClick={submitLists}>Next ></button>
-            </div>
-            <div className="col-md-3">
-              <button type="button" className="btn btn-info button-size">Load Saved Schema</button>
-            </div>
-            <div className="col-md-3">
-              <button type="button" className="btn btn-info button-size">Manage Schema</button>
-            </div>
+      <div className="container">
+        <div className="row justify-content-md-center">
+          <div className="col-md-3">
+            <button type="button" className="btn btn-primary button-size" onClick={submitLists}>Next ></button>
+          </div>
+          <div className="col-md-3">
+            <button type="button" className="btn btn-info button-size">Load Saved Schema</button>
+          </div>
+          <div className="col-md-3">
+            <button type="button" className="btn btn-info button-size">Manage Schema</button>
           </div>
         </div>
-      </HomeScreenStyle>
+      </div>
     </div> )
 }
 
-const HomeScreenStyle = styled.div`
-  background: #EEEEEE;
-  margin: 2em;
-  padding-top: 25px;
-  padding-bottom: 125px;
-`;
 
 
 

@@ -54,42 +54,33 @@ export default function ScriptScreen() {
   }
 
   return (
-    <div>
-      <ScriptScreenStyle>
-        <div className="container project-format">
+    <div className="screen-div">
+      <div className="container project-format">
         <div className="row">
-            <br/>
-            <h4 className="text-center"><strong>Select the language and copy the script to paste in your analysis script</strong></h4>
+          <br/>
+          <h4 className="text-center"><strong>Select the language and copy the script to paste in your analysis script</strong></h4>
+        </div>
+        <br/>
+        <br/>
+        <div className="row">
+          <div className="col-md-4 text-center">
+            <button type="button" className="btn btn-primary button-size" value='SQL' onClick={handleScriptSelect}>SQL</button>
+            <br />
+            <button type="button" className="btn btn-primary button-size" value='Python' onClick={handleScriptSelect}>Python (pandas)</button>
           </div>
-          <br/>
-          <br/>
-          <div className="row">
-            <div className="col-md-4 text-center">
-              <button type="button" className="btn btn-primary button-size" value='SQL' onClick={handleScriptSelect}>SQL</button>
-              <br />
-              <button type="button" className="btn btn-primary button-size" value='Python' onClick={handleScriptSelect}>Python (pandas)</button>
-            </div>
 
-            <div className="col-md-8">
-              <ScriptTextBoxStyle>
-                <div>
-                  {script}
-                </div>
-              </ScriptTextBoxStyle>
-            </div>
+          <div className="col-md-8">
+            <ScriptTextBoxStyle>
+              <div>
+                {script}
+              </div>
+            </ScriptTextBoxStyle>
           </div>
         </div>
-      </ScriptScreenStyle>
+      </div>
     </div>
   )
 }
-
-const ScriptScreenStyle = styled.div`
-  background: #EEEEEE;
-  margin: 2em;
-  padding-top: 25px;
-  padding-bottom: 125px;
-`;
 
 const ScriptTextBoxStyle = styled.div`
   background: white;
