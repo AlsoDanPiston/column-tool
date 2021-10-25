@@ -30,7 +30,6 @@ export default function MatchScreen() {
 
   
   useEffect(() => {
-    console.log('xArea: ' + xAreaSize + ', yArea: ' + yAreaSize);
     if (draw === '') {
       draw = SVG().addTo('#line-area').size(xAreaSize, yAreaSize);
     }
@@ -175,10 +174,17 @@ export default function MatchScreen() {
         <div className="row justify-content-md-center">
           <div className="col-md-3">
             <br/>
-            <button type="button" className="btn btn-primary button-size" onClick={submitMatching}>Next Step</button>
+            <button type="button" className="btn btn-primary button-size" onClick={submitMatching}>Next ></button>
+          </div>
+          <div className="col-md-3">
+            <br/>
+            <button type="button" className="btn btn-primary button-size">Save Schema</button>
+          </div>
+          <div className="col-md-3">
+            <br/>
+            <button type="button" className="btn btn-primary button-size" onClick={() => history.push('/manage')}>Manage Schema</button>
           </div>
         </div>
       </div>
-    </div>
-  )
+    </div>  )
 }

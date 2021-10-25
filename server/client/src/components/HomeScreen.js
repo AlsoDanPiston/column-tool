@@ -94,10 +94,10 @@ export default function HomeScreen() {
             <button type="button" className="btn btn-primary button-size" onClick={submitLists}>Next ></button>
           </div>
           <div className="col-md-3">
-            <button type="button" className="btn btn-info button-size">Load Saved Schema</button>
+            <button type="button" className="btn btn-info button-size">Save Schema</button>
           </div>
           <div className="col-md-3">
-            <button type="button" className="btn btn-info button-size">Manage Schema</button>
+            <button type="button" className="btn btn-info button-size" onClick={() => history.push('/manage')}>Manage Schema</button>
           </div>
         </div>
       </div>

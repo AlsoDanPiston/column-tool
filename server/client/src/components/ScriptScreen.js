@@ -77,6 +77,13 @@ export default function ScriptScreen() {
             </ScriptTextBoxStyle>
           </div>
         </div>
+        <br />
+      </div>
+      <div className="container">
+        <div className="row justify-content-md-center">
+          <hr />
+          <button className="btn btn-primary button-size">Save Schema</button>
+        </div>
       </div>
     </div>
   )
