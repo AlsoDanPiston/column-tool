@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import ParsePastedInputs from '../helpers/ParsePastedInputs';
-import { addColumns } from '../actions';
+import { addColumns, saveSchema } from '../actions';
 import { useHistory } from 'react-router-dom';
 
 export default function HomeScreen() {
@@ -42,6 +42,14 @@ export default function HomeScreen() {
 
     // set it to go to Match screen here too
     history.push('/match')
+  };
+
+  const submitSaveSchema = () => {
+    dispatch(
+      saveSchema({
+        inputCols,
+      })
+    )
   };
 
   return (
@@ -94,7 +102,7 @@ export default function HomeScreen() {
             <button type="button" className="btn btn-primary button-size" onClick={submitLists}>Next ></button>
           </div>
           <div className="col-md-3">
-            <button type="button" className="btn btn-info button-size">Save Schema</button>
+            <button type="button" className="btn btn-info button-size" onClick={submitSaveSchema}>Save Schema</button>
           </div>
           <div className="col-md-3">
             <button type="button" className="btn btn-info button-size" onClick={() => history.push('/manage')}>Manage Schema</button>
