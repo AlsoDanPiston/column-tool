@@ -60,8 +60,6 @@ export default function MatchScreen() {
     const index = e.target.getAttribute("index");
     const side = e.target.value;
     const clickedId = e.target.getAttribute("id");
-    
-    if (
 
     // newPositionList[leftButtonOutputIndex] = rightButtonOutputIndex
     if (side === 'left') {
@@ -87,8 +85,14 @@ export default function MatchScreen() {
 
     // Draw line between selected buttons using SVG, top button is 207px from top of screen with current format
     if (coordArr.length === 2) {
-      const line = draw.line(coordArr[0][0], coordArr[0][1], coordArr[1][0], coordArr[1][1]).move(0,15);
+      // set y position in the svg draw area
+      const yLineOffset = Math.min(coordArr[0][1], coordArr[1][1]);
+
+      // set slope of line and move it to y position
+      const line = draw.line(coordArr[0][0], coordArr[0][1], coordArr[1][0], coordArr[1][1]).move(0,yLineOffset);
       line.stroke({ color: '#000', width: 4});
+
+      // reset coordArr for next line's slope calculation
       coordArr = [];
     }
   }
