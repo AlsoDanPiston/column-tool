@@ -176,14 +176,6 @@ export default function MatchScreen() {
             <br/>
             <button type="button" className="btn btn-primary button-size" onClick={submitMatching}>Next ></button>
           </div>
-          <div className="col-md-3 text-center">
-            <br/>
-            <button type="button" className="btn btn-primary button-size">Save Schema</button>
-          </div>
-          <div className="col-md-3 text-center">
-            <br/>
-            <button type="button" className="btn btn-primary button-size" onClick={() => history.push('/manage')}>Manage Schema</button>
-          </div>
         </div>
       </div>
     </div>  )

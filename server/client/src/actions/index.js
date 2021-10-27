@@ -19,28 +19,30 @@ export const matchColumns = (colsState) => {
 };
 
 // back-end actions
-const SCHEMA_SAVE = "SCHEMA_SAVE";
-const SCHEMA_USE = "SCHEMA_USE";
+const COLS_SAVE = "COLS_SAVE";
+const COLS_ALL = "COLS_ALL";
 //const SCHEMA_DELETE = "SCHEMA_DELETE";
 
 export const saveSchema = () => {
+  console.log('at saveSchema action');
+  
   const ROOT_URL = "http://localhost:5000/saveSchema";
 
   const request = axios.get(`${ROOT_URL}`);
 
   return {
-    type: SCHEMA_SAVE,
+    type: COLS_SAVE,
     payload: request,
   };
 }
 
 export const useSchema = () => {
-  const ROOT_URL = "http://localhost:5000/useSchema";
+  const ROOT_URL = "http://localhost:5000/";
 
   const request = axios.get(`${ROOT_URL}`);
 
   return {
-    type: SCHEMA_USE,
+    type: COLS_ALL,
     payload: request,
   };
 }
