@@ -39,7 +39,7 @@ export default function MatchScreen() {
      if (inputList.length > 0) {
       return (
         inputList.map((col, i) => {
-          return <div><button className="button-match" id={`left-${i}`} index={i} value="left" onClick={buttonClickHandler}>{col}</button><div/></div>
+          return <div key={i}><button className="button-match" key={i} id={`left-${i}`} index={i} value="left" onClick={buttonClickHandler}>{col}</button><div/></div>
         })
       );
     }
@@ -49,7 +49,7 @@ export default function MatchScreen() {
     if (outputList.length > 0) {
       return (
         outputList.map((col, i) => {
-          return <div><button className="button-match" id={`right-${i}`} index={i} value="right" onClick={buttonClickHandler}>{col}</button><div/></div>
+          return <div key={i}><button className="button-match" key={i} id={`right-${i}`} index={i} value="right" onClick={buttonClickHandler}>{col}</button><div/></div>
         })
       );
     }
@@ -172,15 +172,15 @@ export default function MatchScreen() {
 
       <div className="container">
         <div className="row justify-content-md-center">
-          <div className="col-md-3">
+          <div className="col-md-3 text-center">
             <br/>
             <button type="button" className="btn btn-primary button-size" onClick={submitMatching}>Next ></button>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 text-center">
             <br/>
             <button type="button" className="btn btn-primary button-size">Save Schema</button>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 text-center">
             <br/>
             <button type="button" className="btn btn-primary button-size" onClick={() => history.push('/manage')}>Manage Schema</button>
           </div>
