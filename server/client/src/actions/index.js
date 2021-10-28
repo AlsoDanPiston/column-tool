@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// front-end actions
-const COLS_ADDED = "COLS_ADDED";
-const COLS_MATCHED = "COLS_MATCHED";
+import {
+  COLS_ADDED, COLS_MATCHED,
+  COLS_SAVE, COLS_ALL, COLS_BYID
+} from './types'
 
 export const addColumns = (colsState) => {
   return {
@@ -18,31 +19,48 @@ export const matchColumns = (colsState) => {
   };
 };
 
-// back-end actions
-const COLS_SAVE = "COLS_SAVE";
-const COLS_ALL = "COLS_ALL";
+
 //const SCHEMA_DELETE = "SCHEMA_DELETE";
 
-export const saveSchema = () => {
-  console.log('at saveSchema action');
+export const saveSchema = (inputObj) => dispatch => {
+  console.log('saveSchema inputObj  ' + JSON.stringify(inputObj));
   
-  const ROOT_URL = "http://localhost:5000/saveSchema";
-
-  const request = axios.get(`${ROOT_URL}`);
-
-  return {
-    type: COLS_SAVE,
-    payload: request,
+  //{"saveCols":{"name":"test2","columnList":["col1","col2","col3"]}}
+  const saveObj = {
+    name: inputObj.saveCols.name,
+    colList: inputObj.saveCols.columnList,
   };
+  // goes into:
+  // const addedColList = new ColumnSavedSchema({
+  //   name: req.body.name,
+  //   columnlist: req.body.colList,
+  // })
+
+  axios.post("http://localhost:5000/saveSchema", saveObj)
+  .then(function (response) {
+    dispatch({ type: COLS_SAVE, payload: response.data });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
-export const useSchema = () => {
-  const ROOT_URL = "http://localhost:5000/";
+export const useSchema = () => dispatch => {
+  axios.get("https://localhost:5000/")
+  .then(function (response) {
+    dispatch({ type: COLS_ALL, payload: response.data });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
 
-  const request = axios.get(`${ROOT_URL}`);
-
-  return {
-    type: COLS_ALL,
-    payload: request,
-  };
+export const getSchemaById = (selectId) => dispatch => {
+  axios.get(`https://localhost:5000/${selectId}`)
+  .then(function (response) {
+    dispatch({ type: COLS_BYID, payload: response.data });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }

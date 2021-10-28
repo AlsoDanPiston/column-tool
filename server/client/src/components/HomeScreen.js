@@ -15,7 +15,7 @@ export default function HomeScreen() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const setYesOrNo = (e) => {
+  const setYesOrNo = () => {
     if (saveYesNo === 'no') {
       setSaveYesNo('yes');
     } else {
@@ -113,8 +113,8 @@ export default function HomeScreen() {
             onChange={(e) => setColSaveName(e.target.value)}>
           </input>
           <div className="form-check">
-            <input className="form-check-input" type="checkbox"/>
-            <label className="form-check-label" onChange={(e) => setSaveYesNo()}>Save Schema</label>
+            <input className="form-check-input" type="checkbox" onChange={(e) => setYesOrNo()}/>
+            <label className="form-check-label">Save Schema</label>
           </div>
 
         </div>

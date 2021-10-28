@@ -5,7 +5,7 @@ import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
 import HomeScreen from './components/HomeScreen.js'
 import MatchScreen from './components/MatchScreen.js'
@@ -14,8 +14,10 @@ import ManageScreen from './components/ManageScreen.js'
 
 import rootReducer from './reducers/'
 
-//const store = createStore(rootReducer, {}, applyMiddleware(thunk));
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(),))
+import { composeWithDevTools } from 'redux-devtools-extension';
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk),))
+
+//const store = createStore(rootReducer, applyMiddleware(thunk));
 
 render(
   <Provider store={store}>

@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ManageScreen() {
   const history = useHistory();
   
+  const allSchema = useSelector((state) => state);
+
+  console.log('in ManageScreen.js, allSchema = '+ allSchema);
+
   // get schema from selector
   // for now, use:
   const schemaObj = {
