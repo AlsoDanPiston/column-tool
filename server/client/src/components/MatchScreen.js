@@ -119,10 +119,6 @@ export default function MatchScreen() {
       newColNameList: newOutList
     }
 
-    // set it to error if not all of outputList is selected but give option to continue
-
-
-
     // dispatch action 
     dispatch(
       matchColumns({

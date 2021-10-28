@@ -1,48 +1,66 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from "react-redux";
+import { fetchSchema, getSchemaById } from '../actions';
+import { deleteSchema } from '../actions';
 
 export default function ManageScreen() {
   const history = useHistory();
-  
-  const allSchema = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  console.log('in ManageScreen.js, allSchema = '+ allSchema);
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
-  // get schema from selector
-  // for now, use:
-  const schemaObj = {
-    '00000000001': '["a", "b", "c", "e"]',
-    '00000000002': '["acct", "name"]',
+  const [selectedSchema, setSelectedSchema] = useState("");
+
+  const allSchema = useSelector((state) => state.manage);
+
+  useEffect(() => {
+    dispatch(fetchSchema());
+  }, []);
+
+  const clickDelete = (e) => {
+    const clickedId = e.target.getAttribute("id");
+
+    dispatch(deleteSchema(clickedId));
+
+    // need to force a re-render here
   }
 
-  // transpose to array of arrays to be able to use 
-  let schemaArr = [];
-  for (const [key, value] of Object.entries(schemaObj)) {
-    schemaArr.push(value);
+  const clickUse = (e) => {
+    const clickedId = e.target.getAttribute("id");
+
+    dispatch(getSchemaById(clickedId));
+
+    //setSelectedSchema('')
   }
 
   const SavedItem = () => {
-    if (schemaArr.length > 0) {
-      return (
-        schemaArr.map((s, i) => {
-          return <div>
-            <div className="row">
-              <div className="col-md-1"></div>
-              <div className="col-md-4" id={i}>{s}</div>
-              <div className="col-md-1"></div>
-              <div className="col-md-3"><button className="btn btn-success" id={`use-${i}`}>Use This Schema</button></div>
-              <div className="col-md-2"><button className="btn btn-danger" id={`delete-${i}`}>Delete</button></div>
-              <div className="col-md-1"></div>
+    return allSchema.loading ? (
+      <div className="row">Loading</div>
+    ) : (
+      <div>
+        {allSchema.data.map((s, i) => 
+        <div>
+          <div className="row" key={i}>
+            <div className="col-md-1" key={`col1-${i}`}></div>
+            <div className="col-md-2" key={`col2-${i}`}>{s.name}</div>
+            <div className="col-md-2" key={`col3-${i}`}>{s.columnlist.map(c => <p>{c}</p>)}</div>
+            <div className="col-md-1" key={`col4-${i}`}></div>
+            <div className="col-md-3" key={`col5-${i}`}>
+              <button className="btn btn-success" key={`but1-${i}`} id={s._id} onClick={clickUse}>Use Schema</button>
             </div>
-            <div>
-              <br />
+            <div className="col-md-2" key={`col6-${i}`}>
+              <button className="btn btn-danger" key={`but2-${i}`} id={s._id} onClick={clickDelete}>Delete</button>
             </div>
+            <div className="col-md-1" key={`col7-${i}`}></div>
           </div>
-        })
-      );
-    }
+          <br/>
+        </div>)
+        }
+      </div>
+    )
   }
+
 
   return (
     <div className="screen-div">
@@ -57,6 +75,17 @@ export default function ManageScreen() {
         </div>
       </div>
       <div className="container">
+        <div className="row">
+          <div className="col-md-1"></div>
+          <div className="col-md-2">Schema Name</div>
+          <div className="col-md-2">Columns</div>
+          <div className="col-md-1"></div>
+          <div className="col-md-3"></div>
+          <div className="col-md-2"></div>
+          <div className="col-md-1"></div>
+        </div>
+        <hr />
+        {/* SavedItem */}
         <SavedItem />
       </div>
       <div className="container">

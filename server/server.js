@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const bodyParser   = require('body-parser');
+const bodyParser = require('body-parser');
 
 const ColumnSavedSchema = require("./models/columns-saved");
 
@@ -21,14 +21,9 @@ app.listen(5000, () => console.log("server is running on port 5000"));
 
 app.use(bodyParser.json());
 
-// to make it work with postman request:
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }));
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Methods", "GET, POST, DELETE");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -39,7 +34,6 @@ app.use((req, res, next) => {
 //const ColumnSaved = mongoose.model('ColumnSaved', ColumnSavedSchema);
 
 app.post('/saveSchema', (req, res) => {
-  console.log(req.body);
   // save the array, names can be fixed in other screen
   const addedColList = new ColumnSavedSchema({
     name: req.body.name,
@@ -61,16 +55,16 @@ app.get('/', (req, res) => {
 
 
 // for use button on manage screen
-app.get('/allSchemas/:id', (req, res) => {
-
-
-  
+app.get('/:id', (req, res) => {
+  ColumnSavedSchema.find({ _id: req.params.id })
+    .exec((err, columns) => {
+      if (err) return next(err);
+      res.send(columns);
+    });
 });
 
-app.delete('/allSchemas/delete', (req, res) => {
-  console.log(req.body);
-
-  ColumnSavedSchema.deleteOne({ _id: req.body.id })
+app.delete('/delete/:id', (req, res) => {
+  ColumnSavedSchema.deleteOne({ _id: req.params.id })
     .exec((err, columns) => {
       if (err) return next(err);
       res.send(columns);

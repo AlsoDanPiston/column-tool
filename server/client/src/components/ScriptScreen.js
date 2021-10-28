@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import BuildPythonScript from '../helpers/BuildPythonScript';
@@ -13,6 +14,8 @@ export default function ScriptScreen() {
   const tbl = useSelector((state => state.columns.tableName))
 
   const [script, setScript] = useState("");
+
+  const history = useHistory();
 
   // read in ScriptInfoObject from state
   // for now use a fake one
@@ -82,7 +85,7 @@ export default function ScriptScreen() {
       <div className="container">
         <div className="row justify-content-md-center">
           <hr />
-          <button className="btn btn-primary button-size">Save Schema</button>
+          <button className="btn btn-primary button-size" onClick={() => history.push('/')}>Home</button>
         </div>
       </div>
     </div>
