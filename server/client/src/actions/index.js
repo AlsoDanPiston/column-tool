@@ -19,22 +19,11 @@ export const matchColumns = (colsState) => {
   };
 };
 
-
-//const SCHEMA_DELETE = "SCHEMA_DELETE";
-
 export const saveSchema = (inputObj) => dispatch => {
-  console.log('saveSchema inputObj  ' + JSON.stringify(inputObj));
-  
-  //{"saveCols":{"name":"test2","columnList":["col1","col2","col3"]}}
   const saveObj = {
     name: inputObj.saveCols.name,
     colList: inputObj.saveCols.columnList,
   };
-  // goes into:
-  // const addedColList = new ColumnSavedSchema({
-  //   name: req.body.name,
-  //   columnlist: req.body.colList,
-  // })
 
   axios.post("http://localhost:5000/saveSchema", saveObj)
   .then(function (response) {

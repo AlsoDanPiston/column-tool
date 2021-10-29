@@ -22,14 +22,6 @@ export default function(state = DEFAULT_STATE, action) {
         columnList: action.payload.columnList,
       }
     }
-    case 'COLS_DELETE': {
-      return {
-        ...state,
-        id: action.payload._id,
-        name: action.payload.name,
-        columnList: action.payload.columnList,
-      }
-    }
     default:
       return state;
   }

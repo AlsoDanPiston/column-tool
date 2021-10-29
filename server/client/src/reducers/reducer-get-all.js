@@ -11,6 +11,12 @@ export default function(state = DEFAULT_STATE, action) {
         loading: false,
       }
     }
+    case 'COLS_DELETE': {
+      return {
+        ...state,
+        data: state.data.filter(item => item !== action.payload)
+      }
+    }
     default:
       return state;
   }

@@ -1,18 +1,14 @@
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSchema, getSchemaById } from '../actions';
-import { deleteSchema } from '../actions';
+import { fetchSchema, getSchemaById, deleteSchema, addColumns } from '../actions';
 import ParsePastedInputs from '../helpers/ParsePastedInputs';
-import { addColumns } from '../actions';
 
 export default function ManageScreen() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
-
-  const [selectedSchema, setSelectedSchema] = useState("");
+  const [stateToUpdate, setStateToUpdate] = useState("");
 
   const allSchema = useSelector((state) => state.manage);
 
@@ -25,7 +21,7 @@ export default function ManageScreen() {
 
     dispatch(deleteSchema(clickedId));
 
-    // need to force a re-render here
+    window.location.reload()
   }
 
   const clickUse = (e) => {
@@ -54,7 +50,7 @@ export default function ManageScreen() {
 
   const SavedItem = () => {
     return allSchema.loading ? (
-      <div className="row">Loading</div>
+      <div className="row" key="loading">Loading</div>
     ) : (
       <div>
         {allSchema.data.map((s, i) => 
@@ -81,35 +77,35 @@ export default function ManageScreen() {
 
 
   return (
-    <div className="screen-div">
-      <div className="container text-center">
-        <div className="row">
+    <div className="screen-div" key="top-div">
+      <div className="container text-center" key="h-1">
+        <div className="row" key="r-1">
           <br/>
-          <h4 className="text-center"><strong>Manage Schema</strong></h4>
+          <h4 className="text-center" key="title"><strong>Manage Schema</strong></h4>
           <br />
           <br />
           <hr />
           <br />
         </div>
       </div>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-1"></div>
-          <div className="col-md-2">Schema Name</div>
-          <div className="col-md-2">Columns</div>
-          <div className="col-md-1"></div>
-          <div className="col-md-3"></div>
-          <div className="col-md-2"></div>
-          <div className="col-md-1"></div>
+      <div className="container" key="h-2">
+        <div className="row" key="r-2">
+          <div className="col-md-1" key="col1-top"></div>
+          <div className="col-md-2" key="col2-top"><strong>Schema Name</strong></div>
+          <div className="col-md-2" key="col3-top"><strong>Columns</strong></div>
+          <div className="col-md-1" key="col4-top"></div>
+          <div className="col-md-3" key="col5-top"></div>
+          <div className="col-md-2" key="col6-top"></div>
+          <div className="col-md-1" key="col7-top"></div>
         </div>
         <hr />
         {/* SavedItem */}
         <SavedItem />
       </div>
       <div className="container">
-        <div className="row justify-content-md-center">
+        <div className="row justify-content-md-center" key="h-3">
           <hr />
-          <button className="btn btn-primary button-size" onClick={()=> history.push("/")}>Home</button>
+          <button className="btn btn-primary button-size" key="button-home" onClick={()=> history.push("/")}>Home</button>
         </div>
       </div>
     </div>
