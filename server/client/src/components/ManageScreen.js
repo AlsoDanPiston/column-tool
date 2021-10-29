@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSchema, getSchemaById } from '../actions';
 import { deleteSchema } from '../actions';
+import ParsePastedInputs from '../helpers/ParsePastedInputs';
+import { addColumns } from '../actions';
 
 export default function ManageScreen() {
   const history = useHistory();
@@ -28,10 +30,26 @@ export default function ManageScreen() {
 
   const clickUse = (e) => {
     const clickedId = e.target.getAttribute("id");
+    const indexStr = e.target.getAttribute("index");
+
+    const selectedCols = allSchema.data[indexStr].columnlist.join(',');
 
     dispatch(getSchemaById(clickedId));
 
-    //setSelectedSchema('')
+    const inputState = {
+      newOutputCols : ParsePastedInputs(selectedCols),
+      newInputCols : [],
+      tableName: '',
+    }
+
+    // dispatch actions
+    dispatch(
+      addColumns({
+        inputState,
+      })
+    ); 
+
+    history.push('/');
   }
 
   const SavedItem = () => {
@@ -47,7 +65,7 @@ export default function ManageScreen() {
             <div className="col-md-2" key={`col3-${i}`}>{s.columnlist.map(c => <p>{c}</p>)}</div>
             <div className="col-md-1" key={`col4-${i}`}></div>
             <div className="col-md-3" key={`col5-${i}`}>
-              <button className="btn btn-success" key={`but1-${i}`} id={s._id} onClick={clickUse}>Use Schema</button>
+              <button className="btn btn-success" key={`but1-${i}`} id={s._id} index={i} onClick={clickUse}>Use Schema</button>
             </div>
             <div className="col-md-2" key={`col6-${i}`}>
               <button className="btn btn-danger" key={`but2-${i}`} id={s._id} onClick={clickDelete}>Delete</button>

@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ParsePastedInputs from '../helpers/ParsePastedInputs';
 import { addColumns, saveSchema } from '../actions';
 import { useHistory } from 'react-router-dom';
 
 export default function HomeScreen() {
 
-  const [outputCols, setOutputCols] = useState("");
+  // see if OutputCols has been set in Manage Screen
+  const useOutputCols = useSelector(state => (state.columns.outputCols));
+  let outColInitialState = "";
+
+  if (useOutputCols.length > 0) {
+    outColInitialState = useOutputCols.join(',');
+  } 
+
+  const [outputCols, setOutputCols] = useState(outColInitialState);
   const [inputCols, setInputCols] = useState("");
   const [tableName, setTableName] = useState("");
   const [colSaveName, setColSaveName] = useState("");
