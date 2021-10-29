@@ -66,6 +66,11 @@ export default function MatchScreen() {
       const selectedButtonX = ((window.innerWidth - 20) / 12 * 4) + 10;
       // default height of button is 30 px, the draw area starts at 175 px down from top
       const selectedButtonY = document.getElementById(clickedId).offsetTop - 175;
+      
+      if (coordArr.length > 0) {
+        coordArr = [];
+      }
+
       coordArr.push([selectedButtonX, selectedButtonY]);
     } else if (side === 'right' & tempLeftIndex >= 0 & !tempArrayBuilder.includes(index)) {
       // won't set until right button clicked, also won't set until left button clicked first
