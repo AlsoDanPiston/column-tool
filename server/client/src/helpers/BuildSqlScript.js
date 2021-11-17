@@ -3,11 +3,20 @@ import React from 'react';
 export default function BuildSqlScript(obj, names) {
   let sqlSelectStr = '';
 
-  for (let i = 0; i < obj.newColNameList.length; i++) {
-    if (i < obj.newColNameList.length - 1) {
-      sqlSelectStr += '  ' + names[obj.newPositionList[i]] + ' AS ' + obj.newColNameList[i] + ',\n';
-    } else {
-      sqlSelectStr += '  ' + names[obj.newPositionList[i]] + ' AS ' + obj.newColNameList[i];
+  //   inputCols: (3) ['C', 'D', 'E']
+// newColNameList: (2) ['b', 'a']
+// newPositionList: (3) ['1', 'drop', '0']
+// tableName: "tbl"
+
+  let j = 0;
+  for (let i = 0; i < obj.newPositionList.length; i++) {
+    if (obj.newPositionList[i] !== 'drop') {
+      if (i < obj.newColNameList.length - 1) {
+        sqlSelectStr += '  ' + names[obj.newPositionList[i]] + ' AS ' + obj.newColNameList[j] + ',\n';
+      } else {
+        sqlSelectStr += '  ' + names[obj.newPositionList[i]] + ' AS ' + obj.newColNameList[j];
+      }
+      j++;
     }
   };
 
