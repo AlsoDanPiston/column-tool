@@ -21,11 +21,21 @@ export default function BuildPythonScript(obj, names, drops) {
     }
   };
 
+  // get newColNameList with ""s
+  let pyLineTwoList = '';
+  for (let i = 0; i < obj.newColNameList.length; i++) {
+    if (i < obj.newColNameList.length - 1) {
+      pyLineTwoList += '"' + obj.newColNameList[i] + '", ';
+    } else {
+      pyLineTwoList += '"' + obj.newColNameList[i] + '"';
+    }
+  };
+
   // subset dataframe into new one
   const pythonLineOne = `${obj.tableName}New = ${obj.tableName}[[${dfSelectStr}]]`
 
   // rename subsetted dataframe columns
-  const pythonLineTwo = `${obj.tableName}New.columns = [${obj.newColNameList}]`
+  const pythonLineTwo = `${obj.tableName}New.columns = [${pyLineTwoList}]`
 
   // combine the python results
   return (<div>
